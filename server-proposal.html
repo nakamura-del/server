@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>サーバープラン構成のご提案 | 鳳企業様 人事考課システム</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1a1a;
+    --paper:#f5f1e8;
+    --paper-2:#ede6d3;
+    --line:#2a2a2a;
+    --accent:#c8431f;
+    --accent-soft:#e8a89a;
+    --green:#2d5a3d;
+    --gold:#b8893b;
+    --gray:#6b6b6b;
+    --gray-soft:#a8a8a8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.7;
+    font-feature-settings:"palt";
+  }
+  .container{max-width:880px;margin:0 auto;padding:48px 32px 80px}
+
+  /* ヘッダー */
+  .doc-header{
+    border-bottom:2px solid var(--ink);
+    padding-bottom:32px;
+    margin-bottom:48px;
+    position:relative;
+  }
+  .doc-header::before{
+    content:"PROPOSAL / 提案書";
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.2em;
+    color:var(--accent);
+    display:block;
+    margin-bottom:16px;
+  }
+  .doc-header h1{
+    font-family:'Shippori Mincho',serif;
+    font-size:clamp(28px,4.5vw,40px);
+    font-weight:700;
+    line-height:1.3;
+    letter-spacing:0.02em;
+    margin-bottom:12px;
+  }
+  .doc-header .sub{
+    font-size:14px;
+    color:var(--gray);
+    letter-spacing:0.05em;
+  }
+  .doc-meta{
+    display:flex;
+    justify-content:space-between;
+    margin-top:20px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--gray);
+    letter-spacing:0.1em;
+  }
+
+  /* セクション */
+  section{margin-bottom:56px}
+  .sec-num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    color:var(--accent);
+    letter-spacing:0.2em;
+    margin-bottom:8px;
+  }
+  h2{
+    font-family:'Shippori Mincho',serif;
+    font-size:24px;
+    font-weight:700;
+    margin-bottom:20px;
+    padding-bottom:12px;
+    border-bottom:1px solid var(--ink);
+  }
+  p{margin-bottom:14px;font-size:15px}
+
+  /* 結論ボックス */
+  .conclusion{
+    background:var(--ink);
+    color:var(--paper);
+    padding:28px 32px;
+    margin:24px 0;
+    position:relative;
+  }
+  .conclusion::before{
+    content:"結論";
+    position:absolute;
+    top:-12px;
+    left:24px;
+    background:var(--accent);
+    color:white;
+    font-size:11px;
+    padding:4px 12px;
+    letter-spacing:0.2em;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .conclusion p{margin:0;font-size:16px;font-weight:500}
+  .conclusion .price{
+    font-family:'Shippori Mincho',serif;
+    font-size:32px;
+    color:var(--accent-soft);
+    margin-top:12px;
+    display:block;
+    font-weight:700;
+  }
+  .conclusion .price small{font-size:14px;color:var(--gray-soft);margin-left:8px}
+
+  /* 図解：現状サーバー */
+  .server-diagram{
+    background:white;
+    border:1px solid var(--line);
+    padding:32px;
+    margin:24px 0;
+  }
+  .diagram-title{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.2em;
+    color:var(--gray);
+    margin-bottom:20px;
+  }
+  .server-box{
+    border:2px solid var(--ink);
+    padding:20px;
+    margin-bottom:16px;
+    position:relative;
+    background:var(--paper-2);
+  }
+  .server-box.danger{border-color:var(--accent);background:#fae5dc}
+  .server-box.safe{border-color:var(--green);background:#dde8e0}
+  .server-label{
+    position:absolute;
+    top:-10px;
+    left:16px;
+    background:var(--ink);
+    color:white;
+    font-size:11px;
+    padding:3px 10px;
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:0.1em;
+  }
+  .server-box.danger .server-label{background:var(--accent)}
+  .server-box.safe .server-label{background:var(--green)}
+  .server-contents{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:8px;
+    margin-top:8px;
+  }
+  .content-chip{
+    background:white;
+    border:1px solid var(--line);
+    padding:10px 12px;
+    font-size:13px;
+    text-align:center;
+    font-weight:500;
+  }
+  .content-chip.alert{
+    background:var(--accent);
+    color:white;
+    border-color:var(--accent);
+  }
+  .content-chip.new{
+    background:var(--gold);
+    color:white;
+    border-color:var(--gold);
+    font-weight:700;
+  }
+  .server-meta{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--gray);
+    margin-top:12px;
+    letter-spacing:0.05em;
+  }
+
+  /* 矢印 */
+  .arrow{
+    text-align:center;
+    margin:16px 0;
+    font-size:24px;
+    color:var(--accent);
+  }
+
+  /* 比較表 */
+  .compare-table{
+    width:100%;
+    border-collapse:collapse;
+    margin:20px 0;
+    background:white;
+    border:1px solid var(--ink);
+  }
+  .compare-table th{
+    background:var(--ink);
+    color:white;
+    padding:14px 12px;
+    font-size:13px;
+    text-align:left;
+    letter-spacing:0.05em;
+    font-weight:500;
+  }
+  .compare-table th.bad{background:var(--accent)}
+  .compare-table th.good{background:var(--green)}
+  .compare-table td{
+    padding:14px 12px;
+    border-bottom:1px solid #ddd;
+    font-size:14px;
+    vertical-align:top;
+  }
+  .compare-table tr:last-child td{border-bottom:none}
+  .compare-table .row-label{
+    font-weight:700;
+    background:var(--paper-2);
+    width:140px;
+  }
+  .x-mark{color:var(--accent);font-weight:700;font-size:16px}
+  .o-mark{color:var(--green);font-weight:700;font-size:16px}
+
+  /* リスクボックス */
+  .risk-box{
+    background:#fae5dc;
+    border-left:4px solid var(--accent);
+    padding:20px 24px;
+    margin:16px 0;
+  }
+  .risk-box .risk-title{
+    font-weight:700;
+    color:var(--accent);
+    margin-bottom:8px;
+    font-size:14px;
+    letter-spacing:0.05em;
+  }
+  .risk-flow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:13px;
+    background:white;
+    padding:12px 16px;
+    margin-top:12px;
+    color:var(--ink);
+    border:1px dashed var(--accent);
+  }
+
+  /* 拡張性カード */
+  .expansion-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:12px;
+    margin:20px 0;
+  }
+  .exp-card{
+    background:white;
+    border:1px solid var(--line);
+    padding:18px;
+    position:relative;
+  }
+  .exp-card .num{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--accent);
+    letter-spacing:0.2em;
+  }
+  .exp-card .title{
+    font-family:'Shippori Mincho',serif;
+    font-size:16px;
+    font-weight:700;
+    margin:6px 0 10px;
+  }
+  .exp-card .desc{font-size:13px;color:var(--gray);line-height:1.6}
+
+  /* リソース棒グラフ */
+  .resource-bar{
+    margin:12px 0;
+  }
+  .resource-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    margin-bottom:6px;
+  }
+  .resource-track{
+    height:24px;
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .resource-fill{
+    height:100%;
+    background:repeating-linear-gradient(45deg,var(--accent),var(--accent) 6px,#a8351a 6px,#a8351a 12px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:11px;
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+  }
+  .resource-free{
+    position:absolute;
+    right:8px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:11px;
+    font-family:'JetBrains Mono',monospace;
+    color:var(--gray);
+  }
+
+  /* コスト試算 */
+  .cost-calc{
+    background:var(--paper-2);
+    padding:24px;
+    margin:20px 0;
+    border:1px solid var(--ink);
+  }
+  .cost-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding:10px 0;
+    border-bottom:1px dashed var(--gray-soft);
+    font-size:14px;
+  }
+  .cost-row:last-of-type{border-bottom:2px solid var(--ink);font-weight:700;font-size:16px;padding-top:14px}
+  .cost-row .amount{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+  }
+  .cost-row .amount.plus{color:var(--accent)}
+
+  /* フッター */
+  footer{
+    margin-top:64px;
+    padding-top:24px;
+    border-top:1px solid var(--ink);
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    color:var(--gray);
+    letter-spacing:0.1em;
+    text-align:center;
+  }
+
+  /* 強調 */
+  strong{font-weight:700;color:var(--accent)}
+  em{font-style:normal;background:linear-gradient(transparent 60%,var(--accent-soft) 60%);padding:0 2px}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="doc-header">
+    <h1>サーバープラン構成のご提案</h1>
+    <div class="sub">人事考課システム構築にあたって</div>
+    <div class="doc-meta">
+      <span>FOR: 鳳企業 様</span>
+      <span>FROM: Trust Link Partner</span>
+      <span>2026.05.22</span>
+    </div>
+  </header>
+
+  <!-- 結論 -->
+  <section>
+    <div class="conclusion">
+      <p>現在のスタンダードプランは継続いただいたまま、<br>同じエックスサーバー内の「<strong style="color:var(--accent-soft)">Xserver VPS</strong>」を追加契約いただきたく存じます。</p>
+      <span class="price">+ ¥1,900<small>/月（年額 約2.3万円）</small></span>
+    </div>
+  </section>
+
+  <!-- 現状の課題 -->
+  <section>
+    <div class="sec-num">01 / 現状確認</div>
+    <h2>現サーバーの利用状況</h2>
+    <p>頂いた情報を確認したところ、現在のスタンダードプラン（sv8137）には既に複数のシステムが稼働しています。</p>
+
+    <div class="server-diagram">
+      <div class="diagram-title">CURRENT SERVER — sv8137 / スタンダードプラン</div>
+      <div class="server-box danger">
+        <span class="server-label">既存サーバー</span>
+        <div class="server-contents">
+          <div class="content-chip">WordPress<br><small>×5ドメイン</small></div>
+          <div class="content-chip">サブドメイン<br><small>×4</small></div>
+          <div class="content-chip">メール<br><small>75アカウント</small></div>
+          <div class="content-chip">MySQL DB<br><small>×8</small></div>
+        </div>
+        <div class="server-meta">ディスク使用:33.9GB / 総ファイル数:455,318件</div>
+      </div>
+      <p style="font-size:13px;color:var(--gray);margin-top:12px">
+        ※ このサーバーは <em>WordPress 専用設計</em>（PHP + MySQL）であり、人事考課システムで採用予定の Next.js + PostgreSQL は技術的に動作しません。
+      </p>
+    </div>
+  </section>
+
+  <!-- 2つの選択肢比較 -->
+  <section>
+    <div class="sec-num">02 / 選択肢の比較</div>
+    <h2>取りうる2つの構成</h2>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>項目</th>
+          <th class="bad">A案：現プランで作る</th>
+          <th class="good">B案：VPS を追加（推奨）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label">月額追加費用</td>
+          <td><strong style="color:var(--green)">¥0</strong></td>
+          <td>+¥1,900</td>
+        </tr>
+        <tr>
+          <td class="row-label">開発技術</td>
+          <td>PHP + MySQL で再設計</td>
+          <td><strong style="color:var(--green)">Next.js + PostgreSQL（現設計）</strong></td>
+        </tr>
+        <tr>
+          <td class="row-label">開発期間への影響</td>
+          <td><span class="x-mark">×</span> 設計を1から書き直し<br><small>追加工数：1.5〜2ヶ月</small></td>
+          <td><span class="o-mark">○</span> 既存設計をそのまま活用<br><small>当初スケジュール通り</small></td>
+        </tr>
+        <tr>
+          <td class="row-label">他システムとの分離</td>
+          <td><span class="x-mark">×</span> WordPress 等と同居</td>
+          <td><span class="o-mark">○</span> 人事システム専用</td>
+        </tr>
+        <tr>
+          <td class="row-label">セキュリティ</td>
+          <td><span class="x-mark">×</span> 巻き込み事故リスクあり</td>
+          <td><span class="o-mark">○</span> 完全分離で安全</td>
+        </tr>
+        <tr>
+          <td class="row-label">将来の拡張性</td>
+          <td><span class="x-mark">×</span> 余力なし</td>
+          <td><span class="o-mark">○</span> 他システムも追加可能</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- セキュリティリスクの可視化 -->
+  <section>
+    <div class="sec-num">03 / リスク詳細</div>
+    <h2>同居運用のリスク</h2>
+    <p>人事考課データは給与査定にも関わる <em>機密性の高いデータ</em> です。WordPress と同じサーバーに置くことの具体的なリスクは以下です。</p>
+
+    <div class="risk-box">
+      <div class="risk-title">▲ 想定される障害シナリオ</div>
+      <p style="font-size:14px;margin-bottom:0">WordPress のプラグイン脆弱性は毎月のように発見されており、攻撃者の標的になりやすい構成です。一度サーバーに侵入されると、同じサーバー内の全データにアクセス可能になります。</p>
+      <div class="risk-flow">
+        WordPressの脆弱性発覚 → サーバー侵入 → <span style="color:var(--accent);font-weight:700">人事評価データ流出</span>
+      </div>
+    </div>
+
+    <p>VPS で分離すれば、仮に WordPress 側で問題が起きても人事システムは無影響です。</p>
+  </section>
+
+  <!-- 推奨構成図 -->
+  <section>
+    <div class="sec-num">04 / 推奨構成</div>
+    <h2>提案する構成</h2>
+
+    <div class="server-diagram">
+      <div class="diagram-title">PROPOSED ARCHITECTURE</div>
+
+      <div class="server-box">
+        <span class="server-label">既存：スタンダード</span>
+        <div class="server-contents">
+          <div class="content-chip">WordPress</div>
+          <div class="content-chip">メール</div>
+          <div class="content-chip">既存サイト群</div>
+        </div>
+        <div class="server-meta">現状のまま継続 / ¥990/月</div>
+      </div>
+
+      <div class="arrow">＋</div>
+
+      <div class="server-box safe">
+        <span class="server-label">新規：Xserver VPS 4GB</span>
+        <div class="server-contents">
+          <div class="content-chip new">人事考課<br>システム</div>
+          <div class="content-chip" style="background:#f0f0f0;color:var(--gray);border-style:dashed">将来の<br>追加システム</div>
+          <div class="content-chip" style="background:#f0f0f0;color:var(--gray);border-style:dashed">将来の<br>追加システム</div>
+        </div>
+        <div class="server-meta">+¥1,900/月（年額 +¥22,800）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VPS の余力 -->
+  <section>
+    <div class="sec-num">05 / 拡張余力</div>
+    <h2>VPS 4GB の実際の使用率</h2>
+    <p>人事考課システム単体では、契約する VPS のリソースをほとんど使いません。<em>大幅な余力</em>があるため、将来的に追加システムを載せていけます。</p>
+
+    <div class="server-diagram">
+      <div class="diagram-title">RESOURCE UTILIZATION</div>
+
+      <div class="resource-bar">
+        <div class="resource-label"><span>メモリ（4GB）</span><span>人事システムの使用想定</span></div>
+        <div class="resource-track">
+          <div class="resource-fill" style="width:20%">~800MB</div>
+          <span class="resource-free">空き 約3.2GB</span>
+        </div>
+      </div>
+
+      <div class="resource-bar">
+        <div class="resource-label"><span>CPU（4コア）</span><span>人事システムの使用想定</span></div>
+        <div class="resource-track">
+          <div class="resource-fill" style="width:18%">~0.7</div>
+          <span class="resource-free">空き 約3.3コア</span>
+        </div>
+      </div>
+
+      <div class="resource-bar">
+        <div class="resource-label"><span>SSD（100GB）</span><span>人事システムの使用想定</span></div>
+        <div class="resource-track">
+          <div class="resource-fill" style="width:8%">~8GB</div>
+          <span class="resource-free">空き 約92GB</span>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--gray)">※ 鳳企業様の規模（社員数 〜数百名）を想定した試算値です。</p>
+  </section>
+
+  <!-- 将来の活用例 -->
+  <section>
+    <div class="sec-num">06 / 将来の活用</div>
+    <h2>追加で載せられるシステム例</h2>
+    <p>余ったリソースを活かして、今後社内システムを段階的に追加していけます。サーバー追加なしで対応できるため、<em>1システムあたりの実質コストが下がっていく</em>構造です。</p>
+
+    <div class="expansion-grid">
+      <div class="exp-card">
+        <div class="num">01</div>
+        <div class="title">店舗売上ダッシュボード</div>
+        <div class="desc">P-Brain と連携した日次・週次レポート</div>
+      </div>
+      <div class="exp-card">
+        <div class="num">02</div>
+        <div class="title">シフト管理</div>
+        <div class="desc">店舗ごとの勤務調整・希望休管理</div>
+      </div>
+      <div class="exp-card">
+        <div class="num">03</div>
+        <div class="title">稟議ワークフロー</div>
+        <div class="desc">紙の決裁書類のデジタル化</div>
+      </div>
+      <div class="exp-card">
+        <div class="num">04</div>
+        <div class="title">社内ナレッジ共有</div>
+        <div class="desc">業務マニュアル・ノウハウ集約</div>
+      </div>
+      <div class="exp-card">
+        <div class="num">05</div>
+        <div class="title">AIチャットボット</div>
+        <div class="desc">Claude 連携の社内問い合わせ対応</div>
+      </div>
+      <div class="exp-card">
+        <div class="num">06</div>
+        <div class="title">検証・バックアップ環境</div>
+        <div class="desc">新システム導入前のテスト場所</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- コスト試算 -->
+  <section>
+    <div class="sec-num">07 / コスト試算</div>
+    <h2>費用の整理</h2>
+
+    <div class="cost-calc">
+      <div class="cost-row">
+        <span>現状：スタンダードプラン</span>
+        <span class="amount">¥990 /月</span>
+      </div>
+      <div class="cost-row">
+        <span>追加：Xserver VPS 4GB</span>
+        <span class="amount plus">+ ¥1,900 /月</span>
+      </div>
+      <div class="cost-row">
+        <span>合計（人事システム稼働後）</span>
+        <span class="amount">¥2,890 /月</span>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--gray);margin-top:12px">
+      年額換算：<strong style="color:var(--ink)">+¥22,800</strong>。なお、現プランのまま PHP + MySQL で再設計する場合、<em>追加開発費として 30〜50万円程度</em>が見込まれます。長期的にはVPS 追加の方が大幅に経済的です。
+    </p>
+  </section>
+
+  <!-- 次のステップ -->
+  <section>
+    <div class="sec-num">08 / 次のアクション</div>
+    <h2>本構成でよろしければ</h2>
+    <p>ご了承いただけましたら、以下の順序で進めさせていただきます。</p>
+    <ol style="padding-left:24px;margin-top:12px">
+      <li style="margin-bottom:8px;font-size:14px">Xserver VPS 4GB プランの契約（鳳企業様にてお手続き）</li>
+      <li style="margin-bottom:8px;font-size:14px">弊社にて初期セットアップ（OS設定、Docker環境構築、SSL証明書）</li>
+      <li style="margin-bottom:8px;font-size:14px">人事考課システムの開発・本番デプロイ</li>
+      <li style="font-size:14px">運用開始・引き継ぎ</li>
+    </ol>
+  </section>
+
+  <footer>
+    TRUST LINK PARTNER CO., LTD. &nbsp;/&nbsp; 本資料はご検討用です。ご質問はお気軽にお問い合わせください。
+  </footer>
+
+</div>
+</body>
+</html>
